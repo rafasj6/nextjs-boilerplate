@@ -33,11 +33,14 @@ export function QuestionHighlight() {
     }
   }
 
-  return <div className="w-full h-min-[200px] rounded-lg border bg-white px-6 py-6 flex flex-col justify-between">
+  return <div className="w-full h-min-[300px] rounded-lg border bg-white px-6 py-6 flex flex-col justify-between">
     <div className="flex flex-col gap-5">
       <p className="text-lg font-bold">Question {(highlightedQuestion?.questionId ?? 0) + 1} </p>
-      <input className=" text-[#0C151D] font-light w-full h-min-[40px] h-[40px] px-4  border" value={questionText} onChange={(e) => setQuestionText(e.target.value)} />
-    </div>
+      <textarea
+        className="text-[#0C151D] font-light w-full h-min-[40px] h-[200px] p-4 border"
+        value={questionText}
+        onChange={(e) => setQuestionText(e.target.value)}
+      />    </div>
     <div className="w-full border-t h-[1px] flex justify-end py-2">
       <button onClick={deleteQuestion}>
         <p className="text-[#475467] font-bold">Delete</p>
