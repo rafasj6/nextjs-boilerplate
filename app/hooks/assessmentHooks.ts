@@ -42,7 +42,6 @@ export function useSaveAssessment() {
     }
 
     const result = await response.json();
-    console.log('Assessment saved successfully:', result);
     return result;
   }, {
     onSuccess: () => {
