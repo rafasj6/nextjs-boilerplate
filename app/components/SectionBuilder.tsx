@@ -10,11 +10,9 @@ export function SectionBuilder() {
 
     const sectionsAsList = Object.values(sections)
 
-
-
     return <div className="flex flex-col">
         <div className="border h-min-[416px] w-[416px] shadow-sm rounded-sm  p-4 bg-white">
-            {sectionsAsList.map((section, i) =>
+            {sectionsAsList.map((section, i) => (
                 <div className="flex flex-col gap-4" key={i}>
                     <SectionComponent
                         index={i}
@@ -24,7 +22,7 @@ export function SectionBuilder() {
                     />
                     <div className="w-full border h-[1px]" />
                 </div>
-            )}
+            ))}
             {sectionsAsList.length === 0 && <p>No sections yet</p>}
         </div>
         <button className="p-1 h-[50px] rounded-xl flex items-center" onClick={() => addSection({ questions: [] })}>
