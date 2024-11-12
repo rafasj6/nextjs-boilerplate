@@ -64,7 +64,9 @@ const useAssessmentStore = create<AssessmentState>((set, get) => ({
     },
     deleteSection: (sectionId) => {
         set((state) => {
-            const { [sectionId]: _, ...remainingSections } = state.sections;
+            const remainingSections = Object.fromEntries(
+                Object.entries(state.sections).filter(([id]) => id !== sectionId.toString())
+            );
             return { sections: remainingSections };
         });
     }
