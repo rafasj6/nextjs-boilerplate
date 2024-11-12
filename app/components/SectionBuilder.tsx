@@ -13,14 +13,15 @@ export function SectionBuilder() {
     return <div className="flex flex-col">
         <div className="border h-min-[416px] w-[416px] shadow-sm rounded-sm  p-4 bg-white">
             {sectionsAsList.map((section, i) => (
-                <div className="flex flex-col gap-4" key={i}>
+                <div key={i}
+                    style={{ borderBottomWidth: i < sectionsAsList.length-1 ? 1 : 0 }}
+                    className="flex flex-col gap-4 ">
                     <SectionComponent
                         index={i}
                         deleteSection={() => deleteSection(i)}
                         questions={section?.questions}
                         setQuestions={(questions) => sections[i]}
                     />
-                    <div className="w-full border h-[1px]" />
                 </div>
             ))}
             {sectionsAsList.length === 0 && <p>No sections yet</p>}
