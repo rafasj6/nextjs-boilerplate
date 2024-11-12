@@ -4,16 +4,18 @@ import useAssessmentStore from "../assessmentState";
 import { Question } from "../types";
 
 
-export function SectionComponent({ index, deleteSection, questions, setQuestions }: { index: number, deleteSection: () => void, questions: Question[], setQuestions: (questions: Question) => void }) {
+export function SectionComponent({ index, deleteSection, questions }: { index: number, deleteSection: () => void, questions: Question[]}) {
   const [isOpen, setIsOpen] = useState(false)
-  const updateSection = useAssessmentStore((state) => state.updateSection);
+  const addQuestion = useAssessmentStore((state) => state.addQuestion);
   const setHighlightedQuestion = useAssessmentStore((state) => state.setHighlightedQuestion);
 
-  function addQuestion() {
-    const newQuestion = ({ text: "" } as Question)
-    const newQuestions = [...questions, newQuestion]
-    updateSection(index, { questions: newQuestions })
-  }
+
+  const handleAddQuestion = () => {
+    const newQuestion = { text: "" };
+    addQuestion(index, newQuestion);
+    // Set new question to be highlighted
+    setHighlightedQuestion(index, questions.length);
+  };
 
   return <div className="flex flex-col py-2 gap-3">
     <div className="flex justify-between cursor-pointer items-center" onClick={() => setIsOpen(!isOpen)}>
@@ -24,12 +26,12 @@ export function SectionComponent({ index, deleteSection, questions, setQuestions
         </button>
       </div>
       <Image
-          src="/Caret-up.png"
-          alt="Add"
-          width={20}
-          height={8}
-          className={`h-full transition-transform duration-300 ${!isOpen ? 'rotate-180' : ''}`}
-        />
+        src="/Caret-up.png"
+        alt="Add"
+        width={20}
+        height={8}
+        className={`h-full transition-transform duration-300 ${!isOpen ? 'rotate-180' : ''}`}
+      />
     </div>
     {isOpen &&
       <>
@@ -43,7 +45,7 @@ export function SectionComponent({ index, deleteSection, questions, setQuestions
           </div>
         </div>
 
-        <button onClick={addQuestion} className="w-full border-[#217BBB] text-[#217BBB] border  flex items-center justify-center rounded-md py-2">
+        <button onClick={handleAddQuestion} className="w-full border-[#217BBB] text-[#217BBB] border  flex items-center justify-center rounded-md py-2">
           <Image src="/Plus.png" alt="Add" width={20} height={20} />
           <p>Add Question</p>
         </button>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import useAssessmentStore from "../assessmentState";
 
 export function QuestionHighlight() {
@@ -33,16 +33,17 @@ export function QuestionHighlight() {
     }
   }, [questionText, highlightedQuestion])
 
-  function deleteQuestion() {
+  const deleteQuestion = useCallback(() => {
     if (highlightedQuestion) {
       const section = useAssessmentStore.getState().getSection(highlightedQuestion.sectionId);
       if (section) {
         const newQuestions = section.questions.filter((_, index) => index !== highlightedQuestion.questionId);
         updateSection(highlightedQuestion.sectionId, { ...section, questions: newQuestions });
       }
-      setHighlightedQuestion(0, 0)
+      setHighlightedQuestion(0, 0);
     }
-  }
+  }, [highlightedQuestion, updateSection, setHighlightedQuestion]);
+
 
   return <div className="w-full h-min-[240px] rounded-lg border bg-white px-6 py-6 flex flex-col justify-between">
     <div className="flex flex-col gap-5">
