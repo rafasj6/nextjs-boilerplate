@@ -12,7 +12,6 @@ export function AsssementComponent() {
 
   useEffect(() => {
     if (sections) {
-      console.log({ sections })
       setSections(sections);
       setHighlightedQuestion(0, 0)
     }
