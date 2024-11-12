@@ -44,7 +44,7 @@ export function QuestionHighlight() {
     }
   }
 
-  return <div className="w-full h-min-[300px] rounded-lg border bg-white px-6 py-6 flex flex-col justify-between">
+  return <div className="w-full h-min-[240px] rounded-lg border bg-white px-6 py-6 flex flex-col justify-between">
     <div className="flex flex-col gap-5">
       <p className="text-lg font-bold">Question {(highlightedQuestion?.questionId ?? 0) + 1} </p>
       <textarea
