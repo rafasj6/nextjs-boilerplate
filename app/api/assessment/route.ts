@@ -4,9 +4,10 @@ import { createClient } from '@supabase/supabase-js';
 
 
 export async function POST(request: NextRequest) {
-    const supabaseUrl = 'https://bggrhlwmjwlajbxdjhxk.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnZ3JobHdtandsYWpieGRqaHhrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczMTMyODU1MiwiZXhwIjoyMDQ2OTA0NTUyfQ.QdAj1GSYWOp6DGzLmp4ogaE5KGm395-5jTlKAY8U6MI'
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+    const supabase = createClient(supabaseUrl ?? "", supabaseAnonKey ?? "");
+
 
     const sections = await request.json();
 
@@ -24,9 +25,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-    const supabaseUrl = 'https://bggrhlwmjwlajbxdjhxk.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnZ3JobHdtandsYWpieGRqaHhrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczMTMyODU1MiwiZXhwIjoyMDQ2OTA0NTUyfQ.QdAj1GSYWOp6DGzLmp4ogaE5KGm395-5jTlKAY8U6MI'
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+    const supabase = createClient(supabaseUrl ?? "", supabaseAnonKey ?? "");
     const { data, error } = await supabase
         .from('assessment')
         .select("json_blob")
