@@ -2,48 +2,71 @@ import { create } from 'zustand';
 import { Section, Question } from './types';
 
 type AssessmentState = {
-    blob: {
-        sections: Section[]
-    }
-    highlightedQuestion: { sectionIndex: number, questionIndex: number, text: string } | undefined;
-    setHighlightedQuestion: (sectionIndex: number, questionIndex: number) => void;
-    setBlob: (newBlob: { sections: Section[] }) => void;
-    setSection: (index: number, section: Section) => void;
-    getSection: (index: number) => Section | undefined;
-    getQuestion: (sectionIndex: number, questionIndex: number) => Question | undefined;
-    setQuestion: (sectionIndex: number, questionIndex: number, question: Question) => void;
+    sections: Record<number, Section>;
+    highlightedQuestion: { sectionId: number, questionId: number, text: string } | undefined;
+    setHighlightedQuestion: (sectionId: number, questionId: number) => void;
+    setSections: (sections: Record<number, Section>) => void;
+    updateSection: (id: number, section: Section) => void;
+    getSection: (id: number) => Section | undefined;
+    getQuestion: (sectionId: number, questionId: number) => Question | undefined;
+    updateQuestion: (sectionId: number, questionId: number, question: Question) => void;
+    addQuestion: (sectionId: number, question: Question) => void;
+    deleteQuestion: (sectionId: number, questionId: number) => void;
+    addSection: (section?: Section) => void;
+    deleteSection: (sectionId: number) => void;
 };
 
 const useAssessmentStore = create<AssessmentState>((set, get) => ({
+    sections: {},
     highlightedQuestion: undefined,
-    setHighlightedQuestion: (sectionIndex: number, questionIndex: number) => {
-        const section = get().getSection(sectionIndex);
-        const question = section?.questions[questionIndex];
-        set({ highlightedQuestion: { sectionIndex, questionIndex, text: question?.text ?? "" } })
+    setHighlightedQuestion: (sectionId, questionId) => {
+        const question = get().getQuestion(sectionId, questionId);
+        set({ highlightedQuestion: { sectionId, questionId, text: question?.text ?? "" } });
     },
-    blob: { sections: [] },
-    setBlob: (newBlob) => set({ blob: newBlob }),
-    setSection: (index, section) => {
-        const { sections } = get().blob;
-        const newSections = [...sections];
-        newSections[index] = section;
-        set({ blob: { sections: newSections } });
+    setSections: (sections) => set({ sections }),
+    updateSection: (id, section) => {
+        set((state) => ({
+            sections: { ...state.sections, [id]: section }
+        }));
     },
-    getSection: (index) => {
-        const { sections } = get().blob;
-        return sections[index];
+    getSection: (id) => get().sections?.[id],
+    getQuestion: (sectionId, questionId) => {
+        const section = get().getSection(sectionId);
+        return section?.questions[questionId];
     },
-    getQuestion: (sectionIndex, questionIndex) => {
-        const section = get().getSection(sectionIndex);
-        return section?.questions[questionIndex];
-    },
-    setQuestion: (sectionIndex, questionIndex, question) => {
-        const section = get().getSection(sectionIndex);
+    updateQuestion: (sectionId, questionId, question) => {
+        const section = get().getSection(sectionId);
         if (section) {
             const newQuestions = [...section.questions];
-            newQuestions[questionIndex] = question;
-            get().setSection(sectionIndex, { ...section, questions: newQuestions });
+            newQuestions[questionId] = question;
+            get().updateSection(sectionId, { ...section, questions: newQuestions });
         }
+    },
+    addQuestion: (sectionId, question) => {
+        const section = get().getSection(sectionId);
+        if (section) {
+            const newQuestions = [...section.questions, question];
+            get().updateSection(sectionId, { ...section, questions: newQuestions });
+        }
+    },
+    deleteQuestion: (sectionId, questionId) => {
+        const section = get().getSection(sectionId);
+        if (section) {
+            const newQuestions = section.questions.filter((_, index) => index !== questionId);
+            get().updateSection(sectionId, { ...section, questions: newQuestions });
+        }
+    },
+    addSection: (section) => {
+        set((state) => {
+            const newId = Object.keys(state.sections).length;
+            return { sections: { ...state.sections, [newId]: section } };
+        });
+    },
+    deleteSection: (sectionId) => {
+        set((state) => {
+            const { [sectionId]: _, ...remainingSections } = state.sections;
+            return { sections: remainingSections };
+        });
     }
 }));
 

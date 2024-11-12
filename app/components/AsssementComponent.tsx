@@ -5,16 +5,17 @@ import { AssessmentBuilder } from "./AssessmentBuilder";
 import { AssessmentBuilderHeader } from "./AssessmentBuilderHeader";
 
 export function AsssementComponent() {
-  const setBlob = useAssessmentStore((state) => state.setBlob);
+  const setSections = useAssessmentStore((state) => state.setSections);
   const setHighlightedQuestion = useAssessmentStore((state) => state.setHighlightedQuestion);
-  const { data: blob } = useFetchAssessment();
-
+  const { data: sections } = useFetchAssessment();
+  
   useEffect(() => {
-    if (blob) {
-      setBlob(blob);
+    if (sections) {
+      console.log({sections})
+      setSections(sections);
       setHighlightedQuestion(0,0)
     }
-  }, [blob])
+  }, [sections])
 
   return <div className="flex flex-col gap-10 bg-gray-50 w-screen min-h-screen">
     <div className="w-full h-10 bg-[#123A68]" />

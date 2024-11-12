@@ -2,8 +2,6 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import useAssessmentStore from '../assessmentState';
 
 export function useFetchAssessment() {
-  const setBlob = useAssessmentStore((state) => state.setBlob);
-
   return useQuery('fetchAssessment', async () => {
     const response = await fetch('/api/assessment', {
       method: 'GET',
@@ -12,14 +10,13 @@ export function useFetchAssessment() {
       },
     });
 
+
     if (!response.ok) {
       throw new Error('Failed to fetch assessment');
     }
 
-    const result = await response.json();
-    setBlob(result.data.json_blob);
-    console.log('Assessment fetched successfully:', result);
-    return result.data.json_blob;
+    const json  = await response.json();
+    return json.data.json_blob;
   }, {
     onError: (error) => {
       console.error('Error fetching assessment:', error);
@@ -29,7 +26,7 @@ export function useFetchAssessment() {
 
 export function useSaveAssessment() {
   const queryClient = useQueryClient();
-  const blob = useAssessmentStore((state) => state.blob);
+  const sections = useAssessmentStore((state) => state.sections);
 
   return useMutation(async () => {
     const response = await fetch('/api/assessment', {
@@ -37,7 +34,7 @@ export function useSaveAssessment() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(blob),
+      body: JSON.stringify(sections),
     });
 
     if (!response.ok) {

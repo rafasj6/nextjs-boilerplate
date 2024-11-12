@@ -6,13 +6,13 @@ import { Question } from "../types";
 
 export function SectionComponent({ index, deleteSection, questions, setQuestions }: { index: number, deleteSection: () => void, questions: Question[], setQuestions: (questions: Question) => void }) {
     const [isOpen, setIsOpen] = useState(false)
-    const setSection = useAssessmentStore((state) => state.setSection);
+    const updateSection = useAssessmentStore((state) => state.updateSection);
     const setHighlightedQuestion = useAssessmentStore((state) => state.setHighlightedQuestion);
   
     function addQuestion() {
       const newQuestion = ({ text: "" } as Question)
       const newQuestions = [...questions, newQuestion]
-      setSection(index, { questions: newQuestions })
+      updateSection(index, { questions: newQuestions })
     }
   
     return <div className="flex flex-col py-2 gap-3">
@@ -34,9 +34,9 @@ export function SectionComponent({ index, deleteSection, questions, setQuestions
       {isOpen &&
         <>
           <div className="flex flex-col text-sm gap-2 text-[#565B61]">
-            <p>{questions.length} Question(s)</p>
+            <p>{questions?.length} Question(s)</p>
             <div className="cursor-pointer">
-              {questions.map((question, i) => (
+              {questions?.map((question, i) => (
                 <div style={{ background: i % 2 ? "#FFFFFF" : "#69A3CC29" }} className="w-full max-w-full flex items-center justify-center h-[50px] rounded-md" key={i} onClick={() => { setHighlightedQuestion(index, i) }}>
                   <p className="truncate items-center "> {question.text}</p>
                 </div>))}
