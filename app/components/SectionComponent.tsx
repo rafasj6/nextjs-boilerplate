@@ -4,7 +4,7 @@ import useAssessmentStore from "../assessmentState";
 import { Question } from "../types";
 
 
-export function SectionComponent({ index, deleteSection, questions }: { index: number, deleteSection: () => void, questions: Question[]}) {
+export function SectionComponent({ index, deleteSection, questions }: { index: number, deleteSection: () => void, questions: Question[] }) {
   const [isOpen, setIsOpen] = useState(false)
   const addQuestion = useAssessmentStore((state) => state.addQuestion);
   const setHighlightedQuestion = useAssessmentStore((state) => state.setHighlightedQuestion);
@@ -26,11 +26,12 @@ export function SectionComponent({ index, deleteSection, questions }: { index: n
         </button>
       </div>
       <Image
-        src="/Caret-up.png"
+        style={{ transform: isOpen? "": "rotate(180deg)" }}
+        src="/Caret.png"
         alt="Add"
         width={20}
         height={8}
-        className={`h-full transition-transform duration-300 ${!isOpen ? 'rotate-180' : ''}`}
+        className={`h-full transition-transform duration-300 `}
       />
     </div>
     {isOpen &&
