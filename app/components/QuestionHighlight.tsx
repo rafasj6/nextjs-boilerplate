@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useAssessmentStore from "../assessmentState";
 
 export function QuestionHighlight() {
@@ -8,6 +8,18 @@ export function QuestionHighlight() {
   const updateSection = useAssessmentStore((state) => state.updateSection);
 
   const [questionText, setQuestionText] = useState("")
+
+
+  // Ref to autofocus 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    // Always autofocus on textArea when highlightedQuestion changes
+    setQuestionText(highlightedQuestion?.text ?? "");
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [highlightedQuestion]);
 
   useEffect(() => {
     setQuestionText(highlightedQuestion?.text ?? "")
@@ -23,11 +35,10 @@ export function QuestionHighlight() {
 
   function deleteQuestion() {
     if (highlightedQuestion) {
-      const { sectionId, questionId } = highlightedQuestion;
-      const section = useAssessmentStore.getState().getSection(sectionId);
+      const section = useAssessmentStore.getState().getSection(highlightedQuestion.sectionId);
       if (section) {
-        const newQuestions = section.questions.filter((_, index) => index !== questionId);
-        updateSection(sectionId, { ...section, questions: newQuestions });
+        const newQuestions = section.questions.filter((_, index) => index !== highlightedQuestion.questionId);
+        updateSection(highlightedQuestion.sectionId, { ...section, questions: newQuestions });
       }
       setHighlightedQuestion(0, 0)
     }
@@ -40,7 +51,9 @@ export function QuestionHighlight() {
         className="text-[#0C151D] font-light w-full h-min-[40px] h-[200px] p-4 border"
         value={questionText}
         onChange={(e) => setQuestionText(e.target.value)}
-      />    </div>
+        ref={textareaRef}
+      />
+    </div>
     <div className="w-full border-t h-[1px] flex justify-end py-2">
       <button onClick={deleteQuestion}>
         <p className="text-[#475467] font-bold">Delete</p>
