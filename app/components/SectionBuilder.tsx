@@ -8,10 +8,13 @@ export function SectionBuilder() {
     const deleteSection = useAssessmentStore((state) => state.deleteSection);
     const addSection = useAssessmentStore((state) => state.addSection);
 
-    const sectionsAsList = Object.entries(sections).map(([id, value]) => ({ id: parseInt(id), value }));
+    const sectionsAsList = Object.entries(sections)
+        .map(([id, value]) => ({ id: parseInt(id), value }))
+        .sort((a, b) => a.id - b.id);
+        
     return <div className="flex flex-col">
         <div className="border h-min-[416px] w-[416px] shadow-sm rounded-sm  p-4 bg-white">
-            {sectionsAsList.map((section,index) => (
+            {sectionsAsList.map((section, index) => (
                 <div key={section.id}
                     style={{ borderBottomWidth: section.id < sectionsAsList.length - 1 ? 1 : 0 }}
                     className="flex flex-col gap-4 ">
@@ -19,7 +22,6 @@ export function SectionBuilder() {
                         index={index}
                         deleteSection={() => deleteSection(section.id)}
                         questions={section?.value.questions}
-                        setQuestions={(questions) => sections[section.id]}
                     />
                 </div>
             ))}
