@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Red Rob",
+  title: "RedRob",
   description: "Demo app",
 };
 
