@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
     const supabase = createClient(supabaseUrl ?? "", supabaseAnonKey ?? "");

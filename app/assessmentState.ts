@@ -59,7 +59,7 @@ const useAssessmentStore = create<AssessmentState>((set, get) => ({
     addSection: (section) => {
         set((state) => {
             const newId = Object.keys(state.sections).length;
-            return { sections: { ...state.sections, [newId]: section } };
+            return { sections: { ...state.sections, [newId]: section as Section } };
         });
     },
     deleteSection: (sectionId) => {

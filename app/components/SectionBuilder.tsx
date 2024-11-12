@@ -1,5 +1,4 @@
 import useAssessmentStore from "../assessmentState";
-import { Section } from "../types";
 import { SectionComponent } from "./SectionComponent";
 import Image from "next/image";
 
@@ -11,7 +10,7 @@ export function SectionBuilder() {
     const sectionsAsList = Object.entries(sections)
         .map(([id, value]) => ({ id: parseInt(id), value }))
         .sort((a, b) => a.id - b.id);
-        
+
     return <div className="flex flex-col">
         <div className="border h-min-[416px] w-[416px] shadow-sm rounded-sm  p-4 bg-white">
             {sectionsAsList.map((section, index) => (
